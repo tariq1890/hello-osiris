@@ -1,33 +1,29 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 )
 
-func main() {
-	finish := make(chan bool)
-
+func serve(port int32, name string, msg []byte) {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/", Hello)
-
-	mux2 := http.NewServeMux()
-	mux2.HandleFunc("/", Greetings)
-
+	mux.HandleFunc(
+		"/",
+		func(w http.ResponseWriter, _ *http.Request) {
+			w.Write(msg)
+		},
+	)
+	log.Printf("%s server listening at :%d", name, port)
 	go func() {
-		http.ListenAndServe(":4000", mux)
+		if err := http.ListenAndServe(fmt.Sprintf(":%d", port), mux); err != nil {
+			log.Fatalln(err)
+		}
 	}()
-
-	go func() {
-		http.ListenAndServe(":5000", mux2)
-	}()
-
-	<-finish
 }
 
-func Hello(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Listening on 4000: Hello World!\n"))
-}
-
-func Greetings(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Listening on 5000: Greetings World!\n"))
+func main() {
+	serve(4000, "hello", []byte("Hello, World!"))
+	serve(5000, "goodbye", []byte("Ya'll come back real soon!"))
+	select {}
 }
