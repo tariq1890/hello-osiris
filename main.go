@@ -23,7 +23,7 @@ func serve(port int32, name string, msg []byte) {
 }
 
 func main() {
-	serve(4000, "hello", []byte("Hello, World!"))
-	serve(5000, "goodbye", []byte("Ya'll come back real soon!"))
+	serve(4000, "hello", []byte("Hello, World!\n"))
+	serve(5000, "goodbye", []byte("Ya'll come back real soon!\n"))
 	select {}
 }
