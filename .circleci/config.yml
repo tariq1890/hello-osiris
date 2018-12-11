@@ -1,0 +1,62 @@
+version: 2
+
+base-docker-job: &base-docker-job
+  docker:
+    - image: quay.io/deis/acr-publishing-tools:v0.1.0
+
+log-into-docker-registry-step: &log-into-docker-registry-step
+  name: Log into Docker Registry
+  command: docker login -u "${DOCKER_REGISTRY_USERNAME}" -p "${DOCKER_REGISTRY_PASSWORD}" ${DOCKER_REGISTRY}
+
+jobs:
+  build:
+    <<: *base-docker-job
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Docker Image
+          command: make build
+  publish-rc-images:
+    <<: *base-docker-job
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          <<: *log-into-docker-registry-step
+      - run:
+          name: Publish Release Candidate Images to Quay
+          command: make push-rc
+  publish-release-images:
+    <<: *base-docker-job
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          <<: *log-into-docker-registry-step
+      - run:
+          name: Publish Release Images to Quay
+          command: REL_VERSION="${CIRCLE_TAG}" make push-release
+
+workflows:
+  version: 2
+  build-pr:
+    jobs:
+      - build:
+          filters:
+            branches:
+              ignore: master
+  build-master:
+    jobs:
+      - publish-rc-images:
+          filters:
+            branches:
+              only: master
+  release:
+    jobs:
+      - publish-release-images:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /[0-9]+(\.[0-9]+)*(\-.+)?/
