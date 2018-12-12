@@ -25,7 +25,7 @@ jobs:
       - run:
           <<: *log-into-docker-registry-step
       - run:
-          name: Publish Release Candidate Images to Quay
+          name: Publish Release Candidate Images to Docker Hub
           command: make push-rc
   publish-release-images:
     <<: *base-docker-job
@@ -35,7 +35,7 @@ jobs:
       - run:
           <<: *log-into-docker-registry-step
       - run:
-          name: Publish Release Images to Quay
+          name: Publish Release Images to Docker Hub
           command: REL_VERSION="${CIRCLE_TAG}" make push-release
 
 workflows:
