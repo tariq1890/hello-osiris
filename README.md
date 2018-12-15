@@ -1,6 +1,7 @@
 # hello-osiris
 [![CircleCI](https://circleci.com/gh/tariq1890/hello-osiris/tree/master.svg?style=svg)](https://circleci.com/gh/tariq1890/hello-osiris/tree/master)
 [![](https://img.shields.io/docker/pulls/tariq181290/hello-osiris.svg)](https://cloud.docker.com/repository/docker/tariq181290/hello-osiris)
+[![License](https://img.shields.io/github/license/tariq1890/hello-osiris.svg)](https://github.com/tariq1890/hello-osiris/blob/master/LICENSE)
 
 hello-osiris is a basic golang web server that listens on two ports 4000 and 5000.
 
