@@ -6,7 +6,7 @@ hello-osiris is a basic golang web server that listens on two ports 4000 and 500
 
 ### Usage
 
-hello-osiris is used as a sample web application for demonstrating the functions of Osiris (https://github.com/deislabs/osiris), a scale to zero component for Kubernetes.
+hello-osiris is used as a sample web application for demonstrating the functions of [Osiris](https://github.com/deislabs/osiris), a scale to zero component for Kubernetes.
 
 ### Running in a container
 
